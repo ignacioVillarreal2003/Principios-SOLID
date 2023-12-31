@@ -1,0 +1,11 @@
+C:\Users\ignac\OneDrive\Escritorio\Nueva carpeta\proyecto\src\Library\bin\Debug\net7.0\Library.deps.json
+C:\Users\ignac\OneDrive\Escritorio\Nueva carpeta\proyecto\src\Library\bin\Debug\net7.0\Library.dll
+C:\Users\ignac\OneDrive\Escritorio\Nueva carpeta\proyecto\src\Library\bin\Debug\net7.0\Library.pdb
+C:\Users\ignac\OneDrive\Escritorio\Nueva carpeta\proyecto\src\Library\obj\Debug\net7.0\Library.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ignac\OneDrive\Escritorio\Nueva carpeta\proyecto\src\Library\obj\Debug\net7.0\Library.AssemblyInfoInputs.cache
+C:\Users\ignac\OneDrive\Escritorio\Nueva carpeta\proyecto\src\Library\obj\Debug\net7.0\Library.AssemblyInfo.cs
+C:\Users\ignac\OneDrive\Escritorio\Nueva carpeta\proyecto\src\Library\obj\Debug\net7.0\Library.csproj.CoreCompileInputs.cache
+C:\Users\ignac\OneDrive\Escritorio\Nueva carpeta\proyecto\src\Library\obj\Debug\net7.0\Library.dll
+C:\Users\ignac\OneDrive\Escritorio\Nueva carpeta\proyecto\src\Library\obj\Debug\net7.0\refint\Library.dll
+C:\Users\ignac\OneDrive\Escritorio\Nueva carpeta\proyecto\src\Library\obj\Debug\net7.0\Library.pdb
+C:\Users\ignac\OneDrive\Escritorio\Nueva carpeta\proyecto\src\Library\obj\Debug\net7.0\ref\Library.dll
