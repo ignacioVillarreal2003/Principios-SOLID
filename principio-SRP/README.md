@@ -36,9 +36,11 @@ De acuerdo, la función addUser() puede que funcione, pero está violando el pri
 - Crear la conexión con la base de datos.
 - Construir la consulta sql.
 - Ejecutar la consulta.
+
 De este modo, estamos dando pie a que cuando añadamos otra función de manipulación de la base de datos, repitamos en él la creación de la conexión de la base de datos, etc. O sea, que lo anterior nos deja poco margen para la reutilización y sin duda duplicaremos mucho código.
 
 Una mejor más alineada con SRP sería la siguiente.
+
 ~~~
 var util = require('util');
 
