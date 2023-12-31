@@ -22,7 +22,13 @@ class Customer
 }
 ~~~
 
-En el siguiente ejemplo, hemos reorganizado el código para cumplir con el principio de responsabilidad única. Ahora, tenemos tres clases distintas: CustomerValidator, CustomerRepository, y Customer. Cada clase tiene una única responsabilidad. CustomerValidator se encarga de validar si el cliente es válido, CustomerRepository se encarga de guardar el cliente en la base de datos, y Customer contiene simplemente la información del cliente. Este diseño facilita la comprensión del código y su mantenimiento, ya que cada clase tiene un propósito claro.
+En el siguiente ejemplo, hemos reorganizado el código para cumplir con el principio de responsabilidad única. Ahora, tenemos tres clases distintas: CustomerValidator, CustomerRepository, y Customer. Cada clase tiene una única responsabilidad. 
+
+- CustomerValidator se encarga de validar si el cliente es válido.
+- CustomerRepository se encarga de guardar el cliente en la base de datos.
+- Customer contiene simplemente la información del cliente.
+
+Este diseño facilita la comprensión del código y su mantenimiento, ya que cada clase tiene un propósito claro.
 
 ~~~
 class CustomerValidator
