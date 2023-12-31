@@ -1,17 +1,15 @@
-# Principio SRP
+# Principio SRP: El Principio de una Sola Responsabilidad
+## ¿Qué significa SRP?
+> SRP, o el Principio de una Sola Responsabilidad, establece que una entidad de software, ya sea una función, una clase o incluso un sistema completo, debería tener una única razón para cambiar. En otras palabras, debe realizar una sola tarea y hacerlo de manera efectiva.
 
-SRP: El principio de una sola responsabilidad
+### En Funciones:
+Cuando aplicamos SRP a funciones, nos referimos a que cada función debería hacer una tarea específica. Esto facilita la lectura, comprensión, depuración y prueba del código.
 
-## ¿Qué es SRP?
-> Una entidad de software debe tener una y solo una razón para cambiar. Haz UNA SOLA COSA y hazla bien, esto se puede aplicar a cualquier nivel: De clase, de función o incluso a nivel de sistema.
+### En Clases:
+A nivel de clases, el principio impulsa a que cada clase tenga una responsabilidad claramente definida, entendiendo una responsabilidad como una razón para cambiar. Las funciones relacionadas deben estar dentro de la misma clase, mientras que funciones no relacionadas deberían residir en clases separadas.
 
-### A bajo nivel: Funciones
-Todo el mundo sabe que una función que hace una sola cosa es más fácil de leer, más fácil de entender y por lo tanto mucho más fácil de depurar y de probar.
-### A nivel medio: Clases
-Es al nivel para el que fue descrito inicialmente el principio de responsabilidad única, donde una responsabilidad se define como un motivo para cambiar.
-Este principio incita a que mantengamos una alta cohesión dentro de nuestras clases de forma que funciones las relacionadas se encuentran dentro de una misma clase y las funciones no relacionadas se encuentran en clases separadas.
-### A nivel de sistema
-Este principio de responsabilidad única, y de mantener bajo acoplamiento y alta cohesión en nuestros componentes también se puede aplicar a alto nivel. Ya hace unos años están de moda en arquitectura de sistemas los microservicios que de nuevo son sistemas completos con una responsabilidad única podríamos tener un servicio de logging, uno de autenticación…etc de nuevo, esto facilita saber donde buscar a la hora de depurar, y el bajo acoplamiento permite reemplazar un componente por otro sin demasiada dificultad.
+### A Nivel de Sistema:
+Este principio no se limita a clases y funciones, también se extiende a sistemas completos. Por ejemplo, en arquitecturas de sistemas como los microservicios, cada servicio tiene una responsabilidad única, como manejar el registro o la autenticación. Esto facilita la depuración, ya que sabemos dónde buscar problemas, y el bajo acoplamiento permite reemplazar un componente por otro con relativa facilidad. En resumen, SRP aporta claridad y mantenibilidad al diseño del software.
 
 
 ## Ejemplo
