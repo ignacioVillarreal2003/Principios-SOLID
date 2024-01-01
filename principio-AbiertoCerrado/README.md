@@ -1,79 +1,64 @@
-# Principio SRP: El Principio de una Sola Responsabilidad
-## ¿Qué significa SRP?
-> SRP, o el Principio de una Sola Responsabilidad, establece que una entidad de software, ya sea una función, una clase o incluso un sistema completo, debería tener una única razón para cambiar. En otras palabras, debe realizar una sola tarea y hacerlo de manera efectiva.
-
-### En Funciones:
-Cuando aplicamos SRP a funciones, nos referimos a que cada función debería hacer una tarea específica. Esto facilita la lectura, comprensión, depuración y prueba del código.
-
-### En Clases:
-A nivel de clases, el principio impulsa a que cada clase tenga una responsabilidad claramente definida, entendiendo una responsabilidad como una razón para cambiar. Las funciones relacionadas deben estar dentro de la misma clase, mientras que funciones no relacionadas deberían residir en clases separadas.
-
-### A Nivel de Sistema:
-Este principio no se limita a clases y funciones, también se extiende a sistemas completos. Por ejemplo, en arquitecturas de sistemas como los microservicios, cada servicio tiene una responsabilidad única, como manejar el registro o la autenticación. Esto facilita la depuración, ya que sabemos dónde buscar problemas, y el bajo acoplamiento permite reemplazar un componente por otro con relativa facilidad. En resumen, SRP aporta claridad y mantenibilidad al diseño del software.
-
+# Principio Abierto-Cerrado
+## ¿Qué es Abierto-Cerrado?
+> El Principio Abierto-Cerrado es uno de los principios fundamentales en diseño de software que sugiere que una clase debe estar abierta para su extensión pero cerrada para su modificación. En otras palabras, deberíamos poder agregar nuevas funcionalidades o comportamientos a un sistema sin cambiar el código existente.
 
 ## Ejemplo
+En el primer ejemplo, la clase Shape tiene un método para calcular el área, pero utiliza una estructura de control de flujo (if-else) para determinar el tipo de forma y calcular el área de manera diferente. Si queremos agregar una nueva forma, tendríamos que modificar el código de la clase Shape, lo cual va en contra del principio de abierto-cerrado.
 ~~~
-var mysql = require('mysql');
-
-function addUser( user, dbConfig ) {
-   var dbConnection = mysql.createConnection( {
-				host : dbConfig.dbHost,
-				user : dbConfig.dbUser,
-				password: dbConfig.dbPwd,
-				database : dbConfig.dbName
-			});
-
-   var sqlQuery = mysql.format("INSERT INTO users (mail, password, alias) VALUES (?, ?, ?)",
-		 	       [user.loginMail, user.loginUserPassword, user.loginAlias] );
-
-   return dbConnection.query( sqlQuery );
-};
-~~~
-
-De acuerdo, la función addUser() puede que funcione, pero está violando el principio SRP, porque se encarga de tres responsabilidades diferentes:
-
-- Crear la conexión con la base de datos.
-- Construir la consulta sql.
-- Ejecutar la consulta.
-
-De este modo, estamos dando pie a que cuando añadamos otra función de manipulación de la base de datos, repitamos en él la creación de la conexión de la base de datos, etc. O sea, que lo anterior nos deja poco margen para la reutilización y sin duda duplicaremos mucho código.
-
-Una mejor más alineada con SRP sería la siguiente.
-
-~~~
-var util = require('util');
-
-function getDBConnection( dbConfig ) {
-   return mysql.createConnection( {
- 			        host : dbConfig.dbHost,
-				user : dbConfig.dbUser,
-				password: dbConfig.dbPwd,
-				database : dbConfig.dbName
-			});
+class Shape
+{
+    public double Area()
+    {
+        if (this is Rectangle)
+        {
+            return (this as Rectangle).Width * (this as Rectangle).Height;
+        }
+        else if (this is Circle)
+        {
+            return 3.14 * (this as Circle).Radius * (this as Circle).Radius;
+        }
+    }
 }
 
-function execQuery( sqlQuery, dbConfig ) {
-   var dbConnection = getDBConnection( dbConfig );
-
-  return dbConnection.query( sqlQuery );
+class Rectangle : Shape
+{
+    public double Width { get; set; }
+    public double Height { get; set; }
 }
 
-function buildInsertQuery( entity, fields, values ) {
-   return util.format( "INSERT INTO %d (%s) values [%s]", entity, fields.join(','), values.join(',') );
-}
-
-function addUser( user, dbConfig ) {
-   var sqlQuery = buildInsertQuery( 'users', 
-  			            ['mail', 'password', 'alias']
-				    [user.loginMail, user.loginUserPassword, user.loginAlias] );
-   return execQuery( sqlQuery, dbConfig )
+class Circle : Shape
+{
+    public double Radius { get; set; }
 }
 ~~~
 
-Se puede pensar que ahora el código es mayor, pero:
+En el segundo ejemplo, la clase Shape es una clase abstracta que tiene un método abstracto para calcular el área. Las clases Rectangle y Circle heredan de Shape y proporcionan implementaciones específicas para calcular el área. Con esta estructura, podemos agregar nuevas formas (como un triángulo o un cuadrado) sin modificar el código de la clase Shape, cumpliendo con el principio de abierto-cerrado.
 
-- la función addUser() es mucho más pequeña: en dos líneas inserta los datos del nuevo usuario en la base de datos. Deja a otras funciones la creación de la fontanería necesaria para ello.
-- Se han creado algunas funciones reutilizables, como buildInsertQuery(), getDBConnection() y execQuery(), que, en caso de tratarse de un proyecto real, serían fácilmente reutilizables.
-- Ahora este código es más fácil de probar en tests automatizados.
-- Descoplamos más la solución de la infraestructura subyacente: si el proceso de creación de la conexión de la base de datos cambia, tan solo hay que modificar getDBConnection(), por poner un ejemplo.
+~~~
+abstract class Shape
+{
+    public abstract double Area();
+}
+
+class Rectangle : Shape
+{
+    public double Width { get; set; }
+    public double Height { get; set; }
+
+    public override double Area()
+    {
+        return Width * Height;
+    }
+}
+
+class Circle : Shape
+{
+    public double Radius { get; set; }
+
+    public override double Area()
+    {
+        return 3.14 * Radius * Radius;
+    }
+}
+~~~
+
