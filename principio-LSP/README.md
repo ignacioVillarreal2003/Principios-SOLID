@@ -1,79 +1,60 @@
-# Principio SRP: El Principio de una Sola Responsabilidad
-## ¿Qué significa SRP?
-> SRP, o el Principio de una Sola Responsabilidad, establece que una entidad de software, ya sea una función, una clase o incluso un sistema completo, debería tener una única razón para cambiar. En otras palabras, debe realizar una sola tarea y hacerlo de manera efectiva.
+# Principio LSP: El Principio de sustitucion de Liskov
 
-### En Funciones:
-Cuando aplicamos SRP a funciones, nos referimos a que cada función debería hacer una tarea específica. Esto facilita la lectura, comprensión, depuración y prueba del código.
-
-### En Clases:
-A nivel de clases, el principio impulsa a que cada clase tenga una responsabilidad claramente definida, entendiendo una responsabilidad como una razón para cambiar. Las funciones relacionadas deben estar dentro de la misma clase, mientras que funciones no relacionadas deberían residir en clases separadas.
-
-### A Nivel de Sistema:
-Este principio no se limita a clases y funciones, también se extiende a sistemas completos. Por ejemplo, en arquitecturas de sistemas como los microservicios, cada servicio tiene una responsabilidad única, como manejar el registro o la autenticación. Esto facilita la depuración, ya que sabemos dónde buscar problemas, y el bajo acoplamiento permite reemplazar un componente por otro con relativa facilidad. En resumen, SRP aporta claridad y mantenibilidad al diseño del software.
+## ¿Qué significa LSP?
+> LSP, o el Principio de Sustitución de Liskov, establece que los objetos de una clase base deben poder ser reemplazados por objetos de una clase derivada sin afectar la corrección del programa. En otras palabras, si una clase base tiene ciertos comportamientos esperados, sus clases derivadas deben ser capaces de heredar y extender esos comportamientos sin cambiar su esencia.
 
 
 ## Ejemplo
-~~~
-var mysql = require('mysql');
 
-function addUser( user, dbConfig ) {
-   var dbConnection = mysql.createConnection( {
-				host : dbConfig.dbHost,
-				user : dbConfig.dbUser,
-				password: dbConfig.dbPwd,
-				database : dbConfig.dbName
-			});
-
-   var sqlQuery = mysql.format("INSERT INTO users (mail, password, alias) VALUES (?, ?, ?)",
-		 	       [user.loginMail, user.loginUserPassword, user.loginAlias] );
-
-   return dbConnection.query( sqlQuery );
-};
-~~~
-
-De acuerdo, la función addUser() puede que funcione, pero está violando el principio SRP, porque se encarga de tres responsabilidades diferentes:
-
-- Crear la conexión con la base de datos.
-- Construir la consulta sql.
-- Ejecutar la consulta.
-
-De este modo, estamos dando pie a que cuando añadamos otra función de manipulación de la base de datos, repitamos en él la creación de la conexión de la base de datos, etc. O sea, que lo anterior nos deja poco margen para la reutilización y sin duda duplicaremos mucho código.
-
-Una mejor más alineada con SRP sería la siguiente.
+En el ejemplo inicial, no se cumple con el Principio de Sustitución de Liskov. La clase derivada Triangle modifica el comportamiento del método virtual GetSides() de la clase base Rectangle. Esto genera un problema cuando se crea una instancia de Triangle y se asigna a una variable de tipo Rectangle. Al hacerlo, se asume que se puede utilizar esa instancia de la misma manera que si fuera una instancia de Rectangle, lo cual no es correcto en este caso. El método GetSides() de la clase Triangle devuelve "3", mientras que la clase Rectangle debería devolver "4".
 
 ~~~
-var util = require('util');
-
-function getDBConnection( dbConfig ) {
-   return mysql.createConnection( {
- 			        host : dbConfig.dbHost,
-				user : dbConfig.dbUser,
-				password: dbConfig.dbPwd,
-				database : dbConfig.dbName
-			});
+public class Rectangle
+{
+    public virtual string GetSides()
+    {
+        return "4";
+    }
 }
 
-function execQuery( sqlQuery, dbConfig ) {
-   var dbConnection = getDBConnection( dbConfig );
-
-  return dbConnection.query( sqlQuery );
+public class Triangle : Rectangle
+{
+    public override string GetSides()
+    {
+        return "3";
+    }
 }
 
-function buildInsertQuery( entity, fields, values ) {
-   return util.format( "INSERT INTO %d (%s) values [%s]", entity, fields.join(','), values.join(',') );
-}
-
-function addUser( user, dbConfig ) {
-   var sqlQuery = buildInsertQuery( 'users', 
-  			            ['mail', 'password', 'alias']
-				    [user.loginMail, user.loginUserPassword, user.loginAlias] );
-   return execQuery( sqlQuery, dbConfig )
-}
+Rectangle rectangle = new Triangle();
+Console.WriteLine(rectangle.GetSides()); // Muestra "3", debería mostrar "4"
 ~~~
 
-Se puede pensar que ahora el código es mayor, pero:
+En el siguiente ejemplo corregido, se utiliza una interfaz IShape que define un método GetSides(). Tanto la clase Rectangle como la clase Triangle implementan esta interfaz y proporcionan su propia implementación para el método GetSides(). Ahora, se puede utilizar la misma variable shape para hacer referencia a diferentes instancias de clases que implementan la interfaz IShape, demostrando que todas las clases que implementan IShape tienen el mismo comportamiento para el método GetSides(). De esta manera, se cumple el Principio de Sustitución de Liskov.
 
-- la función addUser() es mucho más pequeña: en dos líneas inserta los datos del nuevo usuario en la base de datos. Deja a otras funciones la creación de la fontanería necesaria para ello.
-- Se han creado algunas funciones reutilizables, como buildInsertQuery(), getDBConnection() y execQuery(), que, en caso de tratarse de un proyecto real, serían fácilmente reutilizables.
-- Ahora este código es más fácil de probar en tests automatizados.
-- Descoplamos más la solución de la infraestructura subyacente: si el proceso de creación de la conexión de la base de datos cambia, tan solo hay que modificar getDBConnection(), por poner un ejemplo.
+~~~
+public interface IShape
+{
+    string GetSides();
+}
+
+public class Rectangle : IShape
+{
+    public string GetSides()
+    {
+        return "4";
+    }
+}
+
+public class Triangle : IShape
+{
+    public string GetSides()
+    {
+        return "3";
+    }
+}
+
+IShape shape = new Triangle();
+Console.WriteLine(shape.GetSides()); // Muestra "3"
+shape = new Rectangle();
+Console.WriteLine(shape.GetSides()); // Muestra "4"
+~~~
